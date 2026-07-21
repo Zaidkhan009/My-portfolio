@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zaid Khan | Creative Front-End & WordPress Developer</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================
+       1. Global Variables & Reset
+       ========================================= */
+    :root {
+      --bg-dark: #020617;
+      --bg-light: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --primary: #38bdf8;
+      --secondary: #a855f7;
+      --accent-grad: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+      
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.07);
+      --glass-blur: blur(16px);
+      
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Background Canvas */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    a { text-decoration: none; color: inherit; transition: 0.3s; }
+    ul { list-style: none; }
+    h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    /* =========================================
+       2. Scroll Reveal Effects
+       ========================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease-out;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =========================================
+       3. Navigation Bar
+       ========================================= */
+    .navbar {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(2, 6, 23, 0.7);
+      backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 1000;
+      padding: 1rem 0;
+    }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    
+    .logo {
+      font-size: 1.8rem; font-weight: 700;
+      background: var(--accent-grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -1.5px;
+    }
+
+    .nav-links { display: flex; gap: 30px; align-items: center; }
+    .nav-links a { font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+    .nav-links a:hover { color: var(--primary); }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px 22px; border-radius: 50px;
+      border: 1px solid var(--glass-border);
+    }
+
+    /* =========================================
+       4. Hero Section
+       ========================================= */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding-top: 100px;
+    }
+    
+    .badge-wrap { display: flex; gap: 10px; margin-bottom: 25px; }
+    .badge {
+      font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+      background: rgba(56, 189, 248, 0.1); color: var(--primary);
+      padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .badge-sec { background: rgba(168, 85, 247, 0.1); color: var(--secondary); border: 1px solid rgba(168, 85, 247, 0.2); }
+
+    .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 20px; }
+    .hero-gradient {
+      background: var(--accent-grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero p { max-width: 650px; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 40px; }
+    .hero-btns { display: flex; gap: 20px; }
+    
+    .btn {
+      padding: 14px 32px; border-radius: 50px; font-weight: 700; font-size: 1rem;
+      transition: all 0.4s ease; cursor: pointer; border: none; display: inline-block;
+    }
+    .btn-main {
+      background: var(--accent-grad); color: #000;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    }
+    .btn-main:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+    }
+    .btn-sec {
+      background: rgba(255, 255, 255, 0.05); color: var(--text-main);
+      border: 1px solid var(--glass-border);
+    }
+    .btn-sec:hover { background: rgba(255, 255, 255, 0.1); }
+
+    /* =========================================
+       5. Section Structure
+       ========================================= */
+    .section { padding: 120px 0; }
+    .section-header { text-align: center; margin-bottom: 50px; }
+    .section-title { font-size: 2.8rem; margin-bottom: 10px; }
+    .section-subtitle { color: var(--text-muted); font-size: 1.1rem; }
+
+    /* Filter Buttons */
+    .filter-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent-grad);
+      color: #000;
+      border-color: transparent;
+    }
+
+    /* Grids */
+    .skills-grid, .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+    }
+
+    .skill-card, .project-card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      padding: 35px; border-radius: 24px;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .skill-card:hover, .project-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-8px);
+    }
+
+    .project-card.hide {
+      display: none;
+    }
+
+    .skill-icon {
+      width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 25px; font-size: 1.5rem;
+    }
+
+    .project-tag {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--primary);
+      margin-bottom: 12px; display: inline-block;
+    }
+
+    .project-link {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.3s;
+    }
+    .project-link:hover {
+      color: var(--secondary);
+      transform: translateX(4px);
+    }
+
+    /* Contact & Footer */
+    .contact-box {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      padding: 80px 40px; border-radius: 32px; text-align: center;
+    }
+    footer { padding: 40px 0; border-top: 1px solid var(--glass-border); text-align: center; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.8rem; }
+      .nav-links { display: none; }
+      .hero-btns { flex-direction: column; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Interactive Background Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">ZK<span>.</span></div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Work</a></li>
+        <li><a href="#contact" class="nav-btn">Contact Me</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero container reveal" id="about">
+    <div class="badge-wrap">
+      <div class="badge">Front-End Architect</div>
+      <div class="badge badge-sec">WordPress Expert</div>
+    </div>
+    <h1>Weaving <span class="hero-gradient">Code & Design</span> Into Digital Reality.</h1>
+    <p>Hi, I'm <strong>Zaid Khan</strong>. I specialize in building immersive, high-performance websites and modern WooCommerce experiences.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-main">Explore My Creations</a>
+      <a href="#contact" class="btn btn-sec">Let's Discuss Your Vision</a>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section container reveal">
+    <div class="section-header">
+      <h2 class="section-title">Mastery <span>& Stack</span></h2>
+      <p class="section-subtitle">Tools and technologies I use to build scalable web applications.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">⚡</div>
+        <h3>Front-End Engineering</h3>
+        <p>Pixel-perfect, interactive interfaces built with HTML5, CSS3, JavaScript (ES6+), and modern UI frameworks.</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🚀</div>
+        <h3>WordPress & Elementor</h3>
+        <p>Custom, responsive WordPress websites, tailored themes, and speed-optimized CMS setups.</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🛍️</div>
+        <h3>WooCommerce Stores</h3>
+        <p>High-converting online store architecture, product setups, and seamless checkout flows.</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📱</div>
+        <h3>Responsive Architecture</h3>
+        <p>Adaptive and fluid web layouts optimized across desktop, tablet, and mobile devices.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section container reveal">
+    <div class="section-header">
+      <h2 class="section-title">Impactful <span>Projects</span></h2>
+      <p class="section-subtitle">Filter through my recent works and case studies.</p>
+    </div>
+
+    <!-- Category Filter Buttons -->
+    <div class="filter-container">
+      <button class="filter-btn active" data-filter="all">All Work</button>
+      <button class="filter-btn" data-filter="wordpress">WordPress</button>
+      <button class="filter-btn" data-filter="frontend">Front-End</button>
+      <button class="filter-btn" data-filter="ecommerce">E-Commerce</button>
+    </div>
+
+    <div class="projects-grid">
+      
+      <!-- Project 1: Maison & Aura (Luxury E-Commerce Web App) -->
+      <div class="project-card" data-category="ecommerce">
+        <div>
+          <span class="project-tag">AI & Luxury E-Commerce</span>
+          <h3>Maison & Aura - Atelier de Paris</h3>
+          <p>A high-end luxury bag store web application featuring an AI Stylist assistant, real-time simulated logistics order tracking, and localStorage checkout synchronization.</p>
+        </div>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">
+          Explore App &rarr;
+        </a>
+      </div>
+
+      <!-- Project 2: US Surgical Instruments -->
+      <div class="project-card" data-category="wordpress">
+        <div>
+          <span class="project-tag">Medical & Healthcare</span>
+          <h3>US Surgical Instruments</h3>
+          <p>A professional, fully responsive website built for surgical equipment cataloging, product displays, and corporate branding.</p>
+        </div>
+        <a href="https://ussurgicalinstrument.com/" target="_blank" rel="noopener noreferrer" class="project-link">
+          Visit Live Site &rarr;
+        </a>
+      </div>
+
+      <!-- Project 3: Basta Bag Store -->
+      <div class="project-card" data-category="ecommerce">
+        <div>
+          <span class="project-tag">WooCommerce Store</span>
+          <h3>Basta - Bag Store</h3>
+          <p>A custom WooCommerce e-commerce website built for an online bag brand featuring a streamlined checkout flow.</p>
+        </div>
+        <a href="https://basta.pk/" target="_blank" rel="noopener noreferrer" class="project-link">
+          Visit Store &rarr;
+        </a>
+      </div>
+
+      <!-- Project 4: Gym Website -->
+      <div class="project-card" data-category="frontend">
+        <div>
+          <span class="project-tag">Fitness & Web Design</span>
+          <h3>Yellow Power Gym</h3>
+          <p>A high-energy, yellow-themed creative fitness landing page designed with modern interactive sections and bold UI.</p>
+        </div>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">
+          View Demo &rarr;
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section container contact reveal">
+    <div class="contact-box">
+      <h2>Let's build something <span class="hero-gradient">iconic.</span></h2>
+      <p>Have a project in mind, looking to hire, or want to collaborate? Get in touch today.</p>
+      <a href="mailto:zaidkha009@gmail.com" class="btn btn-main">zaidkha009@gmail.com</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Zaid Khan. All rights reserved.</p>
+  </footer>
+
+  <!-- Embedded JavaScript -->
+  <script>
+    // --- 1. Interactive Particles Background ---
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particlesArray = [];
+    let mouse = { x: null, y: null, radius: 120 };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    });
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.8;
+        this.speedY = (Math.random() - 0.5) * 0.8;
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < mouse.radius) {
+          let angle = Math.atan2(dy, dx);
+          let force = (mouse.radius - distance) / mouse.radius;
+          this.x -= Math.cos(angle) * force * 3;
+          this.y -= Math.sin(angle) * force * 3;
+        }
+      }
+    }
+
+    function init() {
+      particlesArray = [];
+      let numberOfParticles = (canvas.width * canvas.height) / 9000;
+      for (let i = 0; i < numberOfParticles; i++) particlesArray.push(new Particle());
+    }
+
+    function connectParticles() {
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+          let dx = particlesArray[a].x - particlesArray[b].x;
+          let dy = particlesArray[a].y - particlesArray[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            let opacity = 1 - distance / 100;
+            ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.25})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+    init();
+    animate();
+
+    // --- 2. Project Filtering Feature ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        projectCards.forEach(card => {
+          if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+            card.classList.remove('hide');
+          } else {
+            card.classList.add('hide');
+          }
+        });
+      });
+    });
+
+    // --- 3. Scroll Reveal Effect ---
+    window.addEventListener('scroll', () => {
+      const reveals = document.querySelectorAll('.reveal');
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveals[i].getBoundingClientRect().top;
+        const revealPoint = 120;
+
+        if (revealTop < windowHeight - revealPoint) {
+          reveals[i].classList.add('active');
+        }
+      }
+    });
+    window.dispatchEvent(new Event('scroll'));
+  </script>
+</body>
+</html>
