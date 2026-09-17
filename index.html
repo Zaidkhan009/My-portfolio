@@ -104,13 +104,13 @@
       letter-spacing: -0.5px;
     }
 
-    .nav-links { display: flex; gap: 30px; align-items: center; }
-    .nav-links a { font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+    .nav-links { display: flex; gap: 25px; align-items: center; }
+    .nav-links a { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
     .nav-links a:hover { color: var(--primary); }
 
     .nav-btn {
       background: rgba(255, 255, 255, 0.05);
-      padding: 10px 22px; border-radius: 50px;
+      padding: 10px 20px; border-radius: 50px;
       border: 1px solid var(--glass-border);
     }
 
@@ -121,7 +121,6 @@
       text-align: center; padding-top: 140px; padding-bottom: 60px;
     }
 
-    /* Image-Matched Badges */
     .badge-wrap { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
     .badge {
       font-family: var(--font-display);
@@ -135,7 +134,6 @@
       border: 1px solid rgba(168, 85, 247, 0.3); 
     }
 
-    /* Image-Matched Headline Typography */
     .hero h1 { 
       font-family: var(--font-display);
       font-size: 4.2rem; 
@@ -225,16 +223,23 @@
     }
 
     /* Grids */
-    .skills-grid, .projects-grid {
+    .skills-grid, .projects-grid, .testimonials-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
     }
 
-    .skill-card {
+    .skill-card, .testimonial-card {
       background: var(--glass); border: 1px solid var(--glass-border);
       backdrop-filter: var(--glass-blur); padding: 35px; border-radius: 24px;
       transition: all 0.4s ease;
     }
-    .skill-card:hover { border-color: rgba(56, 189, 248, 0.4); transform: translateY(-8px); }
+    .skill-card:hover, .testimonial-card:hover { border-color: rgba(56, 189, 248, 0.4); transform: translateY(-8px); }
+
+    .testimonial-card p {
+      color: var(--text-muted); font-size: 0.95rem; font-style: italic; margin-bottom: 20px; line-height: 1.6;
+    }
+    .client-info h4 { color: #fff; font-size: 1.1rem; }
+    .client-info span { color: var(--primary); font-size: 0.85rem; font-weight: 600; }
+    .stars { color: #facc15; margin-bottom: 12px; font-size: 0.9rem; }
 
     /* Project Cards */
     .project-card {
@@ -330,6 +335,7 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Work</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
         <li><a href="#delivery">Delivery</a></li>
         <li><a href="#contact" class="nav-btn">Let's Connect</a></li>
       </ul>
@@ -550,6 +556,46 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- Client Testimonials Section -->
+  <section id="testimonials" class="section container reveal">
+    <div class="section-header">
+      <h2 class="section-title">Client <span>Testimonials</span></h2>
+      <p class="section-subtitle">What partners and clients say about my work and delivery.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p>"Zaid built our entire B2B wholesale distribution platform with extreme precision. The product filtering and quote system work flawlessly."</p>
+        <div class="client-info">
+          <h4>Project Manager</h4>
+          <span>Dot Zero Distribution</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p>"Professional, fast, and highly skilled in Wix Studio. Delivered our photography portfolio website exactly how we envisioned it."</p>
+        <div class="client-info">
+          <h4>Creative Director</h4>
+          <span>Timeless Capture</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p>"Outstanding front-end expertise! Zaid integrated our custom forms and responsive layouts seamlessly on southcertified.com."</p>
+        <div class="client-info">
+          <h4>Operations Head</h4>
+          <span>South Certified</span>
+        </div>
+      </div>
     </div>
   </section>
 
